@@ -17,6 +17,7 @@ var spanMargin int64  // ms
 var spanMin int64     // ms
 
 func main() {
+	// fmt.Printf("%#v\n", os.Args)
 	// parse args
 	if len(os.Args) != 7 {
 		fmt.Println("Usage: ./splitwav 0.000036 800 400 200 srcPath dstDir")
@@ -53,7 +54,7 @@ func main() {
 	// 	SpanMin:     spanMin,
 	// })
 	// fmt.Printf("%v\n err:%v\n", res.NotEmpty, err)
-	fmt.Println(srcPath, dstDir)
+	// fmt.Println(srcPath, dstDir)
 	err = wavgo.SplitSavWav(srcPath, dstDir, wavgo.SplitArgs{
 		BarEnergy:   barEnergy,
 		SpanSilence: spanSilence,
@@ -63,14 +64,13 @@ func main() {
 	if err != nil {
 		fmt.Printf("%s:\t%s\n", srcPath, err)
 	} else {
-		fmt.Printf("%s:\tDONE\n", srcPath)
+		// fmt.Printf("%s:\tDONE\n", srcPath)
+		fmt.Println("ok")
 	}
 }
 
 /*
 GOOS=windows GOARCH=amd64 go build splitwavwin.go
-
-
 
 ./splitwavwin 0.000036 800 400 200 srcPath dstDir
 

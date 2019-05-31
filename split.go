@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -79,7 +79,7 @@ func SplitSavWav(srcPath, outDir string, splitArgs SplitArgs) error {
 func saveSplitRes(srcPath, dstDir string,
 	splitArgs SplitArgs, splitRes *SplitRes) error {
 
-	if path.Ext(srcPath) != ".wav" {
+	if filepath.Ext(srcPath) != ".wav" {
 		return fmt.Errorf("format not supported")
 	}
 
@@ -102,8 +102,9 @@ func saveSplitRes(srcPath, dstDir string,
 		// syscall.Umask(mask)
 	}
 
-	ptrNow := int64(0)                    // init
-	oldName := path.Base(srcPath)         // Get the original filename
+	ptrNow := int64(0) // init
+	// oldName := path.Base(srcPath)         // Get the original filename
+	oldName := filepath.Base(srcPath)     // Get the original filename
 	oldName = oldName[0 : len(oldName)-4] // The suffix of the filename is `.wav`
 
 	for i, v := range splitRes.NotEmpty {
@@ -113,7 +114,7 @@ func saveSplitRes(srcPath, dstDir string,
 		} else {
 			ofHint = "0"
 		}
-		dstPath := path.Join(dstDir, fmt.Sprintf("%s_%s_%08d.wav", oldName, ofHint, i+1))
+		dstPath := filepath.Join(dstDir, fmt.Sprintf("%s_%s_%08d.wav", oldName, ofHint, i+1))
 
 		var padding []float64
 		var paddingE []float64
@@ -281,7 +282,7 @@ func notEmpty(splitRes *SplitRes, splitArgs SplitArgs) *SplitRes {
 
 // EnergySlice 计算wav文件的能量变化 20ms为一个音素
 func EnergySlice(srcPath string) (*SplitRes, error) {
-	srcExt := path.Ext(srcPath)
+	srcExt := filepath.Ext(srcPath)
 	if strings.ToLower(srcExt) != ".wav" {
 		return nil, fmt.Errorf("format not supported")
 	}
